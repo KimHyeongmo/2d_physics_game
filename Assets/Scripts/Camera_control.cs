@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Camera_control : MonoBehaviour
 {
+    public GameObject player;
 
     Transform camera_control;
 
@@ -11,6 +12,11 @@ public class Camera_control : MonoBehaviour
     void Awake()
     {
         camera_control = GetComponent<Transform>();
+    }
+
+    void Start()
+    {
+        //camera_control = player.transform;
     }
 
     // Update is called once per frame
@@ -31,5 +37,13 @@ public class Camera_control : MonoBehaviour
                 camera_control.position += new Vector3(0, 0, 0.1f);
             }
         }
+
+    }
+
+    void LateUpdate()
+    {
+        //카메라 따라 움직이기
+        Vector3 move_camera = new Vector3(player.transform.position.x, player.transform.position.y, camera_control.position.z);
+        camera_control.position = move_camera;
     }
 }

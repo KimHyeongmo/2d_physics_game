@@ -7,11 +7,16 @@ public class Player_move : MonoBehaviour
     public float player_speedright_max;
     public float player_speedleft_max;
     public float player_jump_power;
+
+    public int handling = 0; // 0:false, 1:sensing but not handling, 2:handling
+
+    public bool player_direction = false; //우측이 false, 좌측이 true. flipX에 맞추어
+
     Rigidbody2D rigid;
-    SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     Animator animator;
 
-    //Collider2D[] collider2d;
+    Collider2D[] collider2d;
 
     // Start is called before the first frame update
     void Awake()
@@ -24,9 +29,9 @@ public class Player_move : MonoBehaviour
     void Update()
     {
         
-        /*
+        
         //줍기
-        if(Input.GetKeyDown(KeyCode.Z))
+        if(Input.GetKeyDown(KeyCode.Z) && handling == 0)
         {
             float short_distance = 2.0f;
             int index_check = 0;
@@ -42,12 +47,16 @@ public class Player_move : MonoBehaviour
                     }
                 }
 
-                Debug.Log(collider2d[index_check].name);
+                collider2d[index_check].GetComponent<item>().handed = true;
+                    
+                Debug.Log(collider2d[index_check].GetComponent<item>().handed);
+
+                handling = 1;
 
             }
         }
-        */
-
+        
+        /*
         //중력 변환
         if(Input.GetKeyDown(KeyCode.G))
         {
@@ -78,6 +87,7 @@ public class Player_move : MonoBehaviour
                 spriteRenderer.flipY = false;
             }
         }
+        */
 
         //Jump
         if (Input.GetButtonDown("Jump") && !animator.GetBool("isJumping"))
@@ -98,6 +108,7 @@ public class Player_move : MonoBehaviour
         if (Input.GetButtonDown("Horizontal"))
         {
             spriteRenderer.flipX = Input.GetKeyDown(KeyCode.LeftArrow) == true;
+            player_direction = spriteRenderer.flipX;
             //spriteRenderer.flipX = Input.GetAxisRaw("Horizontal") == -1; (I don't know why It makes matter)
             animator.SetBool("isWalking", true);
         }
@@ -144,11 +155,11 @@ public class Player_move : MonoBehaviour
 
         }
 
-        /*
+        
         //주위 아이템 감지
         collider2d = Physics2D.OverlapCircleAll(rigid.position, 1.0f, LayerMask.GetMask("item"));
         //Debug.Log(collider2d[0].name);
-        */
+        
     }
 
 }
